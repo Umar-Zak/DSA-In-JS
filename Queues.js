@@ -145,18 +145,75 @@ class PriorityQueue{
     }
 }
 
+
+class Nodes{
+    value
+    next
+
+    constructor(value){
+        this.value=value
+    }
+}
    
-const queue=new PriorityQueue()
 
-queue.enqueue(5)
-queue.enqueue(4)
+class LinkedListQueue{
+
+    #first
+    #last
+    #count=0
+    enqueue(item){
+        this.#count++
+        const node=new Nodes(item)
+        if(!this.#first)this.#first=this.#last=node
+
+        this.#last.next=node
+        this.#last=node
+    }
+
+    dequeue(){
+        if(this.#count===0)throw new Error("Illegal Operation")
+        const front=this.#first.value
+        const first=this.#first.next
+        this.#first.next=null
+        this.#first=first
+        this.#count--
+        return front
+    }
+
+    print(){
+        let current=this.#first
+        let items=[]
+        while(current){
+            items[items.length]=current.value
+            current=current.next
+        }
+        console.log(items)
+    }
+
+
+    size(){
+        return this.#count
+    }
+
+    isEmpty(){
+        return this.#count===0
+    }
+
+    peek(){
+        return this.#first.value
+    }
+}
+
+
+
+
+const queue=new LinkedListQueue()
+console.log(queue.isEmpty())
+queue.enqueue(13)
 queue.enqueue(10)
-queue.enqueue(2)
-queue.enqueue(1)
-queue.enqueue(0)
-queue.enqueue(0)
-
-console.log(queue.dequeue())
-queue.enqueue(4)
-console.log(queue.dequeue())
-queue.print()
+queue.enqueue(30)
+console.log(queue.isEmpty())
+console.log(queue.size())
+console.log(queue.peek())
+queue.dequeue()
+console.log(queue.size())

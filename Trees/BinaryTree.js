@@ -48,9 +48,22 @@ class BinaryTree {
         return previous
     }
 
-    find(value) {
-        const previous = this.findNode(value)
-        return previous.value === value ? true : false
+    // find(value) {
+    //     const previous = this.findNode(value)
+    //     return previous.value === value ? true : false
+    // }
+
+    fn(root,value){
+        if(!root)return 0
+        if(root.value===value)return 1
+
+        if(!root.leftChild && !root.rightChild)return 0
+
+        return (this.fn(root.leftChild,value)+this.fn(root.rightChild,value))>0?true:false
+    }
+
+    find(value){
+      return  this.fn(this.root,value)
     }
 
     traversePre(root) {
@@ -130,19 +143,81 @@ class BinaryTree {
         // return last.value
     }
 
+
+    equal(firstRoot,secondRoot){
+        if((!firstRoot && secondRoot)||(firstRoot && !secondRoot))return false
+
+        if(!firstRoot && !secondRoot)return true
+        
+        const root=firstRoot.value===secondRoot.value
+        const left=this.equal(firstRoot.leftChild,secondRoot.leftChild)
+        const right=this.equal(firstRoot.rightChild,secondRoot.rightChild)
+        return root===left==right
+    }
+
+    isEqual(tree){
+        return this.equal(this.root,tree)
+    }
+
+    isBinary(tree, min, max){
+
+        if(!tree)return true
+
+        if(tree.value < min-1 || tree.value > max)return false
+ 
+
+        return this.isBinary(tree.leftChild, min, tree.value-1) && this.isBinary(tree.rightChild, tree.value+1, max)
+        
+               
+    }
+
+    isBinarySearchTree(){
+      return  this.isBinary(this.root,Number.MIN_VALUE,Number.MAX_VALUE)
+    }
+
+    NodeFromDistance(root,kth,list){
+
+        if(!root)return
+
+        if(kth===0){
+            list.push(root.value)
+            return
+        }
+
+      
+        this.NodeFromDistance(root.leftChild,kth-1,list)
+        this.NodeFromDistance(root.rightChild,kth-1,list)
+    }
+
+    NodeFromKthDistance(distance){
+        const list=[]
+        this.NodeFromDistance(this.root,distance,list)
+        return list
+    }
+
+    swap(){
+        const temp=this.root.leftChild
+        this.root.leftChild=this.root.rightChild
+        this.root.rightChild=temp
+    }
+
 }
 
 
 const tree = new BinaryTree()
+const tree2=new BinaryTree()
 
 tree.insert(20)
 tree.insert(10)
 tree.insert(30)
 tree.insert(6)
 tree.insert(14)
-tree.insert(3)
-tree.insert(8)
 tree.insert(24)
-tree.insert(26)
+// tree.insert(24)
 
-console.log(tree.min())
+
+// tree.swap()
+
+ 
+
+ console.log(tree.NodeFromKthDistance(2))

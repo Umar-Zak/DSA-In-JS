@@ -60,7 +60,7 @@ class BinaryTree {
         if(!root.leftChild && !root.rightChild)return 0
 
         return (this.fn(root.leftChild,value)+this.fn(root.rightChild,value))>0?true:false
-    }
+    }6
 
     find(value){
       return  this.fn(this.root,value)
@@ -195,6 +195,61 @@ class BinaryTree {
         return list
     }
 
+
+    traverseLevelOrder(){
+        for(let i=0;i<=this.height();i++){
+            const list=this.NodeFromKthDistance(i)
+            list.forEach((item)=>{
+                console.log(item)
+            })
+        }
+    }
+
+
+    sz(root){
+        if(!root)return 0
+        const left=this.sz(root.leftChild)
+        const right=this.sz(root.rightChild)
+        return 1 + left + right
+    }
+
+    size(){
+        return this.sz(this.root)
+    }
+
+    mx(root){
+        if(!root)return Number.MIN_VALUE
+
+        if(!root.leftChild && !root.rightChild)return root.value
+
+        const left=this.mx(root.leftChild)
+        const right=this.mx(root.rightChild)
+
+        return Math.max(Math.max(left,right),root.value)
+    }
+
+    max(){
+        return this.mx(this.root)
+    }
+
+    getAns(root,value,list){
+        if(!root)return false
+
+        if(root.value===value)return true
+
+        if(this.getAns(root.leftChild,value,list)||this.getAns(root.rightChild,value,list)){
+            list.push(root.value)
+            return true
+        }
+    }
+
+
+    getAncestors(value){
+        const list=[]
+        this.getAns(this.root,value,list)
+        return list
+    }
+
     swap(){
         const temp=this.root.leftChild
         this.root.leftChild=this.root.rightChild
@@ -211,13 +266,18 @@ tree.insert(20)
 tree.insert(10)
 tree.insert(30)
 tree.insert(6)
+tree.insert(21)
+tree.insert(60)
+tree.insert(27)
 tree.insert(14)
-tree.insert(24)
 // tree.insert(24)
+// tree.insert(24)
+tree.insert(24)
+tree.insert(24)
 
 
 // tree.swap()
 
  
 
- console.log(tree.NodeFromKthDistance(2))
+ console.log(tree.getAncestors(27))

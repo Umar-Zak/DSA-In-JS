@@ -168,7 +168,21 @@ class BinaryTree {
 
         return this.isBinary(tree.leftChild, min, tree.value-1) && this.isBinary(tree.rightChild, tree.value+1, max)
         
-               
+    }
+
+    isBal(root){
+        if(!root)return true
+
+        if(this.ht(root.leftChild)-this.ht(root.rightChild)>1 ||
+         this.ht(root.leftChild)-this.ht(root.rightChild)< -1)return false
+
+
+        return this.isBal(root.leftChild) && this.isBal(root.rightChild)
+
+    }
+
+    isBalanced(){
+        return this.isBal(this.root)
     }
 
     isBinarySearchTree(){
@@ -265,19 +279,19 @@ const tree2=new BinaryTree()
 tree.insert(20)
 tree.insert(10)
 tree.insert(30)
-tree.insert(6)
-tree.insert(21)
-tree.insert(60)
-tree.insert(27)
-tree.insert(14)
+// tree.insert(6)
+// tree.insert(21)
+// tree.insert(60)
+// tree.insert(27)
+// tree.insert(14)
 // tree.insert(24)
 // tree.insert(24)
-tree.insert(24)
-tree.insert(24)
+// tree.insert(24)
+// tree.insert(24)
 
 
 // tree.swap()
 
  
 
- console.log(tree.getAncestors(27))
+ console.log(tree.isBalanced())

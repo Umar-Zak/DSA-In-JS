@@ -17,14 +17,16 @@ class LinkedList {
     #count = 0
     addLast(value) {
         const node = new Nodes(value)
+        this.#count++
         if (!this.#first) {
-            this.#first = this.#last = node
+           this.#first = this.#last = node
+           return 
         }
-        else {
+           
             this.#last.next = node
             this.#last = node
-        }
-        this.#count++
+        
+      
     }
 
     getList() {
@@ -64,7 +66,7 @@ class LinkedList {
     }
 
     removeLast() {
-        if (!this.#first) throw new Error("Illegal operation")
+        if (!this.#first) throw new Error("Illegal State")
 
         this.#count--
         if (this.#first === this.#last) return this.#first = this.#last = null
@@ -106,6 +108,8 @@ class LinkedList {
 
 
     removeKthNodeFromEnd(kth) {
+        if(this.isEmpty())throw new Error("Illegal State")
+
         let flag = false
         let rear = this.#first
         let pointer = this.#first
@@ -170,37 +174,37 @@ class LinkedList {
 
 
 function MergeTwoList(l1, l2) {
-    let l=new LinkedList()
-    let p = l1
-    let q = l2
-    while (p || q) {
+    let list=new LinkedList()
+    let firstList = l1
+    let secondList = l2
+    while (firstList || secondList) {
          
-     if(p && q){
-        if (p.value < q.value) {
-            l.addLast(p.value)
-            l.addLast(q.value)
-            p=p.next
-            q=q.next
+     if(firstList && secondList){
+        if (firstList.value < secondList.value) {
+            list.addLast(firstList.value)
+            list.addLast(secondList.value)
+            firstList=firstList.next
+            secondList=secondList.next
        }
        else {
-            l.addLast(q.value)
-            l.addLast(p.value)
-            p=p.next
-            q=q.next
+            list.addLast(secondList.value)
+            list.addLast(firstList.value)
+            firstList=firstList.next
+            secondList=secondList.next
        }
      }
 
-     if(p && !q){
-         l.addLast(p.value)
-         p=p.next
+     if(firstList && !secondList){
+         list.addLast(firstList.value)
+         firstList=firstList.next
      }
-     if(!p && q){
-         l.addLast(q.value)
-         q=q.next
+     if(!firstList && secondList){
+         list.addLast(secondList.value)
+         secondList=secondList.next
      }
     }
 
-    console.log(l.getList())
+    return list.getList()
 }
 
 
@@ -225,7 +229,7 @@ function sumOfTwo(l1, l2) {
         p = p ? p.next : null
         q = q ? q.next : null
     }
-    if (carry > 0) current.next = new Nodes(1)
+    if (carry > 0) current.next = new Nodes(carry/10)
 
     return c.next
 }

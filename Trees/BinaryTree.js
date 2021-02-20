@@ -222,9 +222,8 @@ class BinaryTree {
 
     sz(root){
         if(!root)return 0
-        const left=this.sz(root.leftChild)
-        const right=this.sz(root.rightChild)
-        return 1 + left + right
+
+        return 1 +this.sz(root.leftChild) + this.sz(root.rightChild)
     }
 
     size(){
@@ -232,6 +231,8 @@ class BinaryTree {
     }
 
     mx(root){
+        if(!this.root)throw new Error("Illegal State")
+
         if(!root)return Number.MIN_VALUE
 
         if(!root.leftChild && !root.rightChild)return root.value
@@ -255,6 +256,8 @@ class BinaryTree {
             list.push(root.value)
             return true
         }
+
+        return false
     }
 
 
@@ -268,6 +271,23 @@ class BinaryTree {
         const temp=this.root.leftChild
         this.root.leftChild=this.root.rightChild
         this.root.rightChild=temp
+    }
+
+
+    insertByRecursion(root,value){
+        if(!root)return root=new Nodes(value)
+        
+        if(root.value>value){
+            if(!root.leftChild)root.leftChild=new Nodes(value)
+
+            else this.insertByRecursion(root.leftChild,value)
+        }
+        else{
+            if(!root.rightChild)root.rightChild=new Nodes(value)
+            else this.insertByRecursion(root.rightChild,value)
+        }
+
+        return root
     }
 
 }
